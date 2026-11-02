@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { dueDate, parseISODate, toISODate } from '../src/index.js';
 
-const d = (s) => parseISODate(s);
+const d = (s: string): Date => parseISODate(s);
 
 describe('dueDate', () => {
   it('adds a number of days', () => {

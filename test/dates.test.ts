@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { addDays, addMonths, diffDays, startOfDayUTC, toISODate, parseISODate } from '../src/index.js';
 
-const d = (s) => parseISODate(s);
+const d = (s: string): Date => parseISODate(s);
 
 describe('dates', () => {
   it('adds days across month and year ends', () => {

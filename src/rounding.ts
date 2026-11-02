@@ -2,10 +2,8 @@
  * Rounds to the nearest integer, sending exact halves to the nearest even
  * integer ("banker's rounding"). Used for all minor-unit math so that
  * totals don't drift upward over many line items.
- * @param {number} value
- * @returns {number}
  */
-export function roundHalfEven(value) {
+export function roundHalfEven(value: number): number {
   if (!Number.isFinite(value)) {
     throw new RangeError(`Cannot round ${value}`);
   }
