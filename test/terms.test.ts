@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { dueDate, parseISODate, toISODate } from '../src/index.js';
 
-const d = (s) => parseISODate(s);
+const d = (s: string): Date => parseISODate(s);
 
 describe('dueDate', () => {
   it('adds a number of days', () => {
@@ -15,6 +15,12 @@ describe('dueDate', () => {
 
   it('skips holidays when rolling', () => {
     expect(toISODate(dueDate(d('2026-11-26'), 0, { holidays: ['2026-11-26'] }))).toBe('2026-11-27');
+  });
+
+  it('adds the days from "net" terms', () => {
+    expect(toISODate(dueDate(d('2026-01-15'), 'net30', { rollToBusinessDay: false }))).toBe('2026-02-14');
+    expect(toISODate(dueDate(d('2026-01-15'), 'net30'))).toBe('2026-02-16');
+    expect(toISODate(dueDate(d('2026-01-15'), 'NET 45', { rollToBusinessDay: false }))).toBe('2026-03-01');
   });
 
   it('rejects unknown terms', () => {

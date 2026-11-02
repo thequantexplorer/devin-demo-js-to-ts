@@ -4,24 +4,25 @@ import { nextBusinessDay } from './business-days.js';
 /**
  * Payment terms: a number of days (30), a "net" string ("net30", "NET 45"),
  * or "due_on_receipt".
- * @typedef {number | string} PaymentTerms
  */
+export type PaymentTerms = number | string;
+
+export interface DueDateOptions {
+  /** YYYY-MM-DD dates to skip. */
+  holidays?: readonly string[] | undefined;
+  /** Move a weekend/holiday due date to the next business day. Defaults to true. */
+  rollToBusinessDay?: boolean | undefined;
+}
 
 /**
  * Works out when an invoice is due.
- * @param {Date} issued Invoice date.
- * @param {PaymentTerms} terms
- * @param {object} [options]
- * @param {string[]} [options.holidays] YYYY-MM-DD dates to skip.
- * @param {boolean} [options.rollToBusinessDay] Move a weekend/holiday due date to the next business day. Defaults to true.
- * @returns {Date}
+ * @param issued Invoice date.
  */
-export function dueDate(issued, terms, options = {}) {
+export function dueDate(issued: Date, terms: PaymentTerms, options: DueDateOptions = {}): Date {
   const { holidays = [], rollToBusinessDay = true } = options;
   const start = startOfDayUTC(issued);
 
-  /** @type {Date} */
-  let due;
+  let due: Date;
   if (typeof terms === 'number') {
     due = addDays(start, terms);
   } else if (terms.trim().toLowerCase() === 'due_on_receipt') {
@@ -31,7 +32,7 @@ export function dueDate(issued, terms, options = {}) {
     if (!match) {
       throw new RangeError(`Unknown payment terms: "${terms}"`);
     }
-    due = addDays(start, match[1]);
+    due = addDays(start, Number(match[1]));
   }
 
   return rollToBusinessDay ? nextBusinessDay(due, holidays) : due;

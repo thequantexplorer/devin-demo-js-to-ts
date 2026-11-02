@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { isWeekend, isBusinessDay, nextBusinessDay, addBusinessDays, parseISODate, toISODate } from '../src/index.js';
 
-const d = (s) => parseISODate(s);
+const d = (s: string): Date => parseISODate(s);
 
 describe('business days', () => {
   it('knows weekends', () => {
