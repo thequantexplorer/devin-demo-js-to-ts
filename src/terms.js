@@ -31,7 +31,7 @@ export function dueDate(issued, terms, options = {}) {
     if (!match) {
       throw new RangeError(`Unknown payment terms: "${terms}"`);
     }
-    due = addDays(start, match[1]);
+    due = addDays(start, Number(match[1]));
   }
 
   return rollToBusinessDay ? nextBusinessDay(due, holidays) : due;

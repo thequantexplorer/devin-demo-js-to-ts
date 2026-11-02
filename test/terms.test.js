@@ -17,6 +17,12 @@ describe('dueDate', () => {
     expect(toISODate(dueDate(d('2026-11-26'), 0, { holidays: ['2026-11-26'] }))).toBe('2026-11-27');
   });
 
+  it('adds the days from "net" terms', () => {
+    expect(toISODate(dueDate(d('2026-01-15'), 'net30', { rollToBusinessDay: false }))).toBe('2026-02-14');
+    expect(toISODate(dueDate(d('2026-01-15'), 'net30'))).toBe('2026-02-16');
+    expect(toISODate(dueDate(d('2026-01-15'), 'NET 45', { rollToBusinessDay: false }))).toBe('2026-03-01');
+  });
+
   it('rejects unknown terms', () => {
     expect(() => dueDate(d('2026-01-15'), 'end of month')).toThrow('Unknown payment terms');
   });
